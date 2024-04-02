@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
+	"time"
 )
 
 type Pair[F, S any] struct {
@@ -11,7 +13,24 @@ type Pair[F, S any] struct {
 	Second S
 }
 type IndexContent struct {
-	MenuItems []Pair[string, string]
+	MenuItems []Pair[any, any]
+	Img       string
+	PostList  []PostPreview
+}
+type Post struct {
+	ID          string
+	Title       string
+	PostDate    time.Time
+	PostText    string
+	Description string
+	ImageLink   string
+}
+type PostPreview struct {
+	ID          string
+	Title       string
+	PostDate    time.Time
+	Description string
+	ImageLink   string
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,9 +40,11 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	menuList := queryDB("select name, link from navmenu")
-
+	posts := ListPosts()
 	err1 := tmpl.Execute(w, IndexContent{
 		MenuItems: menuList,
+		Img:       "",
+		PostList:  posts,
 	})
 	if err1 != nil {
 		fmt.Println(err1.Error())
@@ -31,6 +52,17 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	_, checkFolder := os.Stat("./data/img")
+	if checkFolder != nil {
+		err3 := os.Mkdir("data/img", os.ModePerm)
+		if err3 != nil {
+			print(err3.Error())
+		}
+	}
+
+	http.Handle("/static/", http.FileServer(http.Dir("./")))
+	http.Handle("/img/", http.FileServer(http.Dir("./data/")))
+
 	createDB()
 	print("hello")
 	http.HandleFunc("/", indexHandler)

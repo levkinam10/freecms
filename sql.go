@@ -5,20 +5,21 @@ import (
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"os"
+	"time"
 )
 
 func createDB() {
-	_, checkFolder := os.Stat("./db")
+	_, checkFolder := os.Stat("./data")
 	if checkFolder != nil {
-		err3 := os.Mkdir("db", os.ModePerm)
+		err3 := os.Mkdir("data", os.ModePerm)
 		if err3 != nil {
 			print(err3.Error())
 		}
 
 	}
-	_, checkFile := os.Stat("./db/sql.db")
+	_, checkFile := os.Stat("./data/sql.db")
 	if checkFile != nil {
-		file, err := os.Create("./db/sql.db") // Create SQLite file
+		file, err := os.Create("./data/sql.db") // Create SQLite file
 		if err != nil {
 			print(err.Error())
 		}
@@ -27,7 +28,7 @@ func createDB() {
 			print(err1.Error())
 		}
 	}
-	db, err5 := sql.Open("sqlite3", "./db/sql.db")
+	db, err5 := sql.Open("sqlite3", "./data/sql.db")
 	if err5 != nil {
 		print(err5.Error)
 	}
@@ -39,33 +40,37 @@ func createDB() {
 	if err != nil {
 		print(err.Error())
 	}
+	_, err11 := db.Exec("CREATE TABLE IF NOT EXISTS posts (id TEXT, title TEXT, postdate DATETIME, posttext TEXT, description TEXT, description_imagelink TEXT)")
+	if err11 != nil {
+		print(err11.Error())
+	}
 
 	defer db.Close()
 
 }
-func queryDB(q string, args ...any) []Pair[string, string] {
-	db, err := sql.Open("sqlite3", "./db/sql.db")
+func queryDB(q string, args ...any) []Pair[any, any] {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
 	if err != nil {
 		print(err.Error())
 	}
 	defer db.Close()
 	rows, err := db.Query(q)
-	var res []Pair[string, string]
-	var name string
-	var link string
+	var res []Pair[any, any]
+	var first any
+	var second any
 	for rows.Next() {
 
-		err := rows.Scan(&name, &link)
+		err := rows.Scan(&first, &second)
 		if err != nil {
 			fmt.Println(err)
 
 		}
-		res = append(res, Pair[string, string]{name, link})
+		res = append(res, Pair[any, any]{first, second})
 	}
 	return res
 }
 func execDB(q string, args ...any) sql.Result {
-	db, err := sql.Open("sqlite3", "./db/sql.db")
+	db, err := sql.Open("sqlite3", "./data/sql.db")
 	if err != nil {
 		print(err.Error())
 	}
@@ -73,6 +78,31 @@ func execDB(q string, args ...any) sql.Result {
 	res, err := db.Exec(q, args)
 	if err != nil {
 		print(err.Error())
+	}
+	return res
+}
+
+func ListPosts() []PostPreview {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT id, title, postdate, description, description_imagelink FROM posts ORDER BY postdate DESC ")
+	var res []PostPreview
+	var id string
+	var title string
+	var postdate time.Time
+	var description string
+	var description_imagelink string
+	for rows.Next() {
+
+		err := rows.Scan(&id, &title, &postdate, &description, &description_imagelink)
+		if err != nil {
+			fmt.Println(err)
+
+		}
+		res = append(res, PostPreview{id, title, postdate, description, description_imagelink})
 	}
 	return res
 }
