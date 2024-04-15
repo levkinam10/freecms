@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/russross/blackfriday"
+	"html/template"
 	"os"
 	"time"
 )
@@ -103,6 +105,29 @@ func ListPosts() []PostPreview {
 
 		}
 		res = append(res, PostPreview{id, title, postdate, description, description_imagelink})
+	}
+	return res
+}
+func GetPost(id string) Post {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT id, title, postdate, posttext FROM posts WHERE id =?", id)
+	menuList := queryDB("select name, link from navmenu")
+	var res Post
+	var id1 string
+	var title string
+	var postdate time.Time
+	var posttext string
+	for rows.Next() {
+		err := rows.Scan(&id, &title, &postdate, &posttext)
+		if err != nil {
+			fmt.Println(err)
+
+		}
+		res = Post{id1, title, postdate, template.HTML(blackfriday.MarkdownCommon([]byte(posttext))), menuList}
 	}
 	return res
 }

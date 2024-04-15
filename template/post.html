@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/post.css">
+
+    <link href="/
+    static/roboto/roboto.css" rel="stylesheet">
+</head>
+<body>
+    <div class="topnav">
+        {{range .Nav}}<a href="{{.Second}}">{{.First}}</a> {{end}}
+    </div>
+    <div>
+        {{.PostText}}
+    </div>
+</body>
+</html>

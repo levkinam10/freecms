@@ -1,4 +1,6 @@
-/* Add a black background color to the top navigation */
+* {
+    text-decoration: none;
+}
 html, body {
     margin: 0;
     padding: 0;
@@ -43,4 +45,45 @@ html, body {
     left: 0;
 
 
+}
+.post {
+    background: #f2f2f2;
+    left: 15px;
+    width: 90vw;
+    position: relative;
+    box-shadow: 10px 10px 5px rgba(45, 45, 45, 0.72);
+    border-radius: 20px;
+    transition: all .2s ease-in-out;
+    padding-bottom: 0.5px;
+
+
+}
+
+.post:hover{
+    box-shadow: 15px 15px 5px rgba(30, 30, 30, 0.72);
+    transform: scale(1.01, 1.01);
+}
+
+.title, .desc, .image, .date{
+    margin-left: 10px;
+
+}
+
+.title {
+    color: black;
+    font-family: "Roboto";
+    font-weight: 500;
+    font-style: normal;
+}
+.desc {
+    color: black;
+    font-family: "Roboto";
+    font-weight: 400;
+    font-style: normal;
+}
+.date {
+    color: black;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }

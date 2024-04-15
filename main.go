@@ -18,12 +18,11 @@ type IndexContent struct {
 	PostList  []PostPreview
 }
 type Post struct {
-	ID          string
-	Title       string
-	PostDate    time.Time
-	PostText    string
-	Description string
-	ImageLink   string
+	ID       string
+	Title    string
+	PostDate time.Time
+	PostText any
+	Nav      []Pair[any, any]
 }
 type PostPreview struct {
 	ID          string
@@ -50,6 +49,18 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err1.Error())
 	}
 }
+func PostHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("./template/post.html")
+	id := r.PathValue("id")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err1 := tmpl.Execute(w, GetPost(id))
+	if err1 != nil {
+		fmt.Println(err1.Error())
+	}
+
+}
 
 func main() {
 	_, checkFolder := os.Stat("./data/img")
@@ -65,6 +76,7 @@ func main() {
 
 	createDB()
 	print("hello")
+	http.HandleFunc("/post/{id}", PostHandler)
 	http.HandleFunc("/", indexHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

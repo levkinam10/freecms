@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="static/index.css">
+
+    <link href="static/roboto/roboto.css" rel="stylesheet">
 </head>
 <body>
     <div class="topnav">
@@ -13,7 +15,12 @@
         <img src="{{.Img}}">
     </div>
     <div class="posts">
-        {{range .PostList}}<h1>{{.Title}}</h1>{{end}}
+        {{range .PostList}}<a class="link" href="/post/{{.ID}}"><div class="post">
+        <h1 class="title">{{.Title}}</h1>
+        <p class="desc">{{.Description}}</p>
+        <img class="image"src="{{.ImageLink}}" onerror="this.style.display='none'">
+        <p class="date">{{.PostDate.Format "Jan 02, 2006 15:04"}}</p>
+    </div></a>{{end}}
     </div>
 </body>
 </html>
