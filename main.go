@@ -76,6 +76,7 @@ func main() {
 
 	createDB()
 	print("hello")
+	http.HandleFunc("/admin", adminPanelHandler)
 	http.HandleFunc("/post/{id}", PostHandler)
 	http.HandleFunc("/", indexHandler)
 	err := http.ListenAndServe(":8080", nil)

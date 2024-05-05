@@ -5,15 +5,20 @@
     <title>{{.Title}}</title>
     <link rel="stylesheet" href="/static/post.css">
 
-    <link href="/
-    static/roboto/roboto.css" rel="stylesheet">
+    <link href="/static/roboto/roboto.css" rel="stylesheet">
 </head>
 <body>
     <div class="topnav">
         {{range .Nav}}<a href="{{.Second}}">{{.First}}</a> {{end}}
     </div>
-    <div>
+    <div class="post">
+
         {{.PostText}}
+        <hr class="solid">
+        <div class="data">
+        <img src="/static/img/time.svg" alt="" class="timesvg">
+        {{.PostDate.Format "Jan 02, 2006 15:04"}}
+        </div>
     </div>
 </body>
 </html>
