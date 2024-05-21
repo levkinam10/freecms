@@ -76,6 +76,9 @@ func main() {
 
 	createDB()
 	print("hello")
+	http.HandleFunc("/{route}/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/"+r.PathValue("route"), 301)
+	})
 	http.HandleFunc("/admin", adminPanelHandler)
 	http.HandleFunc("/post/{id}", PostHandler)
 	http.HandleFunc("/", indexHandler)
