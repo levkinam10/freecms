@@ -13,9 +13,8 @@ type Pair[F, S any] struct {
 	Second S
 }
 type IndexContent struct {
-	MenuItems []Pair[any, any]
-	Img       string
-	PostList  []PostPreview
+	Title    string
+	PostList []PostPreview
 }
 type Post struct {
 	ID       string
@@ -38,12 +37,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	menuList := queryDB("select name, link from navmenu")
 	posts := ListPosts()
 	err1 := tmpl.Execute(w, IndexContent{
-		MenuItems: menuList,
-		Img:       "",
-		PostList:  posts,
+		Title:    "hello world",
+		PostList: posts,
 	})
 	if err1 != nil {
 		fmt.Println(err1.Error())
@@ -76,9 +73,9 @@ func main() {
 
 	createDB()
 	print("hello")
-	http.HandleFunc("/{route}/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/"+r.PathValue("route"), 301)
-	})
+	//http.HandleFunc("/{route}/", func(w http.ResponseWriter, r *http.Request) {
+	//	http.Redirect(w, r, "/"+r.PathValue("route"), 301)
+	//})
 	http.HandleFunc("/admin", adminPanelHandler)
 	http.HandleFunc("/post/{id}", PostHandler)
 	http.HandleFunc("/", indexHandler)

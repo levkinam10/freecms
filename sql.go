@@ -38,10 +38,6 @@ func createDB() {
 	if err10 != nil {
 		print(err10.Error())
 	}
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS navmenu (name TEXT, link TEXT)")
-	if err != nil {
-		print(err.Error())
-	}
 	_, err11 := db.Exec("CREATE TABLE IF NOT EXISTS posts (id TEXT, title TEXT, postdate DATETIME, posttext TEXT, description TEXT, description_imagelink TEXT)")
 	if err11 != nil {
 		print(err11.Error())

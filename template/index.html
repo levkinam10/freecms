@@ -8,11 +8,8 @@
     <link href="static/roboto/roboto.css" rel="stylesheet">
 </head>
 <body>
-    <div class="topnav">
-        {{range .MenuItems}}<a href="{{.Second}}">{{.First}}</a> {{end}}
-    </div>
-    <div class="picture">
-        <img src="{{.Img}}">
+    <div class="pagetitle">
+        <p class="p1">{{.Title}}</p>
     </div>
     <div class="posts">
         {{range .PostList}}<a class="link" href="/post/{{.ID}}"><div class="post">
