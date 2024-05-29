@@ -6,6 +6,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/russross/blackfriday"
 	"html/template"
+	"math/rand"
 	"os"
 	"time"
 )
@@ -159,7 +160,20 @@ func UpdatePost(id string, title string, desc string, img string, posttext strin
 	defer db.Close()
 	res, err := db.Exec("UPDATE posts SET title=?, description=?, description_imagelink=?, posttext=? WHERE id=?", title, desc, img, posttext, id)
 	if err != nil {
-		print(err.Error())
+		print(err.Error() + "163 in sql")
 	}
 	return res
+}
+func CreatePost() string {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	id := fmt.Sprintf("%08d", rand.Intn(1000000000))
+	_, err1 := db.Exec("INSERT INTO posts (id, title, postdate, posttext, description, description_imagelink) VALUES (?,?,?,?,?,?)", id, "", time.Now(), "", "", "")
+	if err1 != nil {
+		print(err1.Error() + "176 in sql")
+	}
+	return id
 }

@@ -94,3 +94,24 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
 	http.Error(w, "Unauthorized", http.StatusUnauthorized)
 }
+func CreateHandler(w http.ResponseWriter, r *http.Request) {
+	username, password, ok := r.BasicAuth()
+	if ok {
+		usernameHash := sha256.Sum256([]byte(username))
+		passwordHash := sha256.Sum256([]byte(password))
+		expectedUsernameHash := sha256.Sum256([]byte("1234"))
+		expectedPasswordHash := sha256.Sum256([]byte("1234"))
+		usernameMatch := (subtle.ConstantTimeCompare(usernameHash[:], expectedUsernameHash[:]) == 1)
+		passwordMatch := (subtle.ConstantTimeCompare(passwordHash[:], expectedPasswordHash[:]) == 1)
+
+		if usernameMatch && passwordMatch {
+			//posts := ListPosts()
+			id := CreatePost()
+			http.Redirect(w, r, "/admin/edit/"+id, http.StatusFound)
+			return
+		}
+	}
+
+	w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
+	http.Error(w, "Unauthorized", http.StatusUnauthorized)
+}

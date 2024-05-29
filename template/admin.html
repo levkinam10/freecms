@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/static/index.css">
-
+    <link rel="stylesheet" href="/static/admin.css">
     <link href="/static/roboto/roboto.css" rel="stylesheet">
 </head>
 <body>
-<div class="pagetitle">
+<div class="topnav">
+    <a href="/">Back</a>
+    <a href="/admin/create">Create Post</a>
     <p class="p1">{{.Title}}</p>
+
 </div>
 <div class="posts">
     {{range .PostList}}<a class="link" href="/admin/edit/{{.ID}}"><div class="post">

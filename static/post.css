@@ -116,3 +116,9 @@ h1 {
         padding-bottom: 10vh;
     }
 }
+.post * {
+    word-break: break-all;
+}
+.post * * {
+    word-break: break-all;
+}
