@@ -1,6 +1,6 @@
 * {
     text-decoration: none;
-
+    word-break: break-all;
 }
 html, body {
     margin: 0;
@@ -53,6 +53,7 @@ html, body {
     font-family: "Roboto";
     font-weight: 500;
     font-style: normal;
+
 }
 .desc {
     color: black;
@@ -74,4 +75,18 @@ html, body {
     font-size: 2.5vh;
     margin-left: auto;
     margin-right: auto;
+}
+img {
+    width: 89vh;
+}
+@media (max-width:1024px) {
+    .title {
+        font-size: 5vh;
+    }
+    .desc {
+        font-size: 5vw;
+    }
+    img {
+        width: 88vw;
+    }
 }
