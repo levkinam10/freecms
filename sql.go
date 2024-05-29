@@ -97,7 +97,7 @@ func ListPosts() []PostPreview {
 
 		err := rows.Scan(&id, &title, &postdate, &description, &description_imagelink)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error() + "100 in sql")
 
 		}
 		res = append(res, PostPreview{id, title, postdate, description, description_imagelink})
@@ -111,7 +111,7 @@ func GetPost(id string) Post {
 	}
 	defer db.Close()
 	rows, err := db.Query("SELECT id, title, postdate, posttext FROM posts WHERE id =?", id)
-	menuList := queryDB("select name, link from navmenu")
+
 	var res Post
 	var id1 string
 	var title string
@@ -123,7 +123,43 @@ func GetPost(id string) Post {
 			fmt.Println(err)
 
 		}
-		res = Post{id1, title, postdate, template.HTML(blackfriday.MarkdownCommon([]byte(posttext))), menuList}
+		res = Post{id1, title, postdate, template.HTML(blackfriday.MarkdownCommon([]byte(posttext)))}
+	}
+	return res
+}
+func GetPost1(id string) editPost {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT id, title, posttext, description, description_imagelink FROM posts WHERE id =?", id)
+
+	var res editPost
+	var id1 string
+	var title string
+	var desc string
+	var posttext string
+	var img string
+	for rows.Next() {
+		err := rows.Scan(&title, &id1, &posttext, &desc, &img)
+		if err != nil {
+			fmt.Println(err.Error() + "146 in sql")
+
+		}
+		res = editPost{id1, title, desc, posttext, img}
+	}
+	return res
+}
+func UpdatePost(id string, title string, desc string, img string, posttext string) sql.Result {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	res, err := db.Exec("UPDATE posts SET title=?, description=?, description_imagelink=?, posttext=? WHERE id=?", title, desc, img, posttext, id)
+	if err != nil {
+		print(err.Error())
 	}
 	return res
 }

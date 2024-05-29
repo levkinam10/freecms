@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+    <link href="/static/roboto/roboto.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/edit.css">
+</head>
+<body>
+<div class="topnav">
+    <a onclick="sendForm()">Save and back</a>
+</div>
+<div class="data">
+    <form id="editForm" action="/admin/" method="post">
+    <div class="p2">
+    <p>Title</p>
+    <input type="text" name="title" value="{{.Title}}">
+    </div>
+
+    <div class="p2">
+        <p>Description</p>
+        <textarea name="desc" class="p4" rows="1">{{.Desc}}</textarea>
+    </div>
+    <div class="p2">
+        <p>Image Link(empty to none)</p>
+        <input type="text" name="img" value="{{.Img}}">
+    </div>
+    <div class="p2">
+        <p>Post Text(markdown)</p>
+        <textarea name="post" class="p4" rows="40">{{.PostText}}</textarea>
+    </div>
+        <input type="hidden" name="postId" value="{{.Id}}" />
+    </form>
+</div>
+<script>
+    function sendForm(){
+        document.getElementById("editForm").submit();
+    }
+</script>
+</body>
+</html>

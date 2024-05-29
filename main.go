@@ -21,7 +21,6 @@ type Post struct {
 	Title    string
 	PostDate time.Time
 	PostText any
-	Nav      []Pair[any, any]
 }
 type PostPreview struct {
 	ID          string
@@ -76,6 +75,8 @@ func main() {
 	//http.HandleFunc("/{route}/", func(w http.ResponseWriter, r *http.Request) {
 	//	http.Redirect(w, r, "/"+r.PathValue("route"), 301)
 	//})
+	http.HandleFunc("/admin/edit/{id}", editHandler)
+	http.HandleFunc("/admin/", adminPanelHandler)
 	http.HandleFunc("/admin", adminPanelHandler)
 	http.HandleFunc("/post/{id}", PostHandler)
 	http.HandleFunc("/", indexHandler)
