@@ -9,6 +9,7 @@
 <body>
 <div class="topnav">
     <a onclick="sendForm()">Save and back</a>
+    <a onclick="confirmDeletion()">Delete Post</a>
 </div>
 <div class="data">
     <form id="editForm" action="/admin/" method="post">
@@ -31,10 +32,21 @@
     </div>
         <input type="hidden" name="postId" value="{{.Id}}" />
     </form>
+
 </div>
 <script>
     function sendForm(){
         document.getElementById("editForm").submit();
+    }
+    function confirmDeletion() {
+        let confirmDeletion = confirm("Delete this post?");
+        if (confirmDeletion == true) {
+            let confirmDeletionDouble = confirm("Delete this post?(Double check)")
+            if (confirmDeletionDouble == true) {
+                window.location.href = "/admin/delete/{{.Id}}";
+            }
+        }
+
     }
 </script>
 </body>

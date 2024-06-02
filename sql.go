@@ -177,3 +177,15 @@ func CreatePost() string {
 	}
 	return id
 }
+func DeletePost(id string) sql.Result {
+	db, err := sql.Open("sqlite3", "./data/sql.db")
+	if err != nil {
+		print(err.Error())
+	}
+	defer db.Close()
+	res, err := db.Exec("DELETE FROM posts WHERE id=?", id)
+	if err != nil {
+		print(err.Error() + "187 in sql")
+	}
+	return res
+}

@@ -75,6 +75,7 @@ func main() {
 	//http.HandleFunc("/{route}/", func(w http.ResponseWriter, r *http.Request) {
 	//	http.Redirect(w, r, "/"+r.PathValue("route"), 301)
 	//})
+	http.HandleFunc("/admin/delete/{id}", DeleteHandler)
 	http.HandleFunc("/admin/create", CreateHandler)
 	http.HandleFunc("/admin/edit/{id}", editHandler)
 	http.HandleFunc("/admin/", adminPanelHandler)
